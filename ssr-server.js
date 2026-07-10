@@ -5,17 +5,25 @@ import { fileURLToPath, pathToFileURL } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Find the SSR bundle dynamically
-const ssrPath = path.resolve(__dirname, 'bootstrap/ssr/assets/js');
-const files = fs.readdirSync(ssrPath);
-const ssrBundle = files.find(file => file.startsWith('ssr-') && file.endsWith('.js'));
+// Find the SSR bundle. Since the vite.config.js fix, the SSR entry is emitted
+// unhashed at bootstrap/ssr/ssr.js (which Laravel's Inertia BundleDetector
+// also requires). Fall back to scanning for a legacy hashed bundle.
+let ssrBundlePath = path.resolve(__dirname, 'bootstrap/ssr/ssr.js');
+let ssrBundle = 'ssr.js';
 
-if (!ssrBundle) {
-    console.error('❌ SSR bundle not found! Please run "npm run build" first.');
-    process.exit(1);
+if (!fs.existsSync(ssrBundlePath)) {
+    const legacyPath = path.resolve(__dirname, 'bootstrap/ssr/assets/js');
+    const files = fs.existsSync(legacyPath) ? fs.readdirSync(legacyPath) : [];
+    ssrBundle = files.find(file => file.startsWith('ssr-') && file.endsWith('.js'));
+
+    if (!ssrBundle) {
+        console.error('❌ SSR bundle not found! Please run "npm run build" first.');
+        process.exit(1);
+    }
+
+    ssrBundlePath = path.join(legacyPath, ssrBundle);
 }
 
-const ssrBundlePath = path.join(ssrPath, ssrBundle);
 // Convert Windows path to file:// URL for ESM import
 const ssrBundleURL = pathToFileURL(ssrBundlePath).href;
 

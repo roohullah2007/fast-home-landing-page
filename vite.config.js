@@ -91,7 +91,12 @@ export default defineConfig(({ isSsrBuild }) => ({
                 },
                 // Optimize chunk file names
                 chunkFileNames: 'assets/js/[name]-[hash].js',
-                entryFileNames: 'assets/js/[name]-[hash].js',
+                // SSR entry must be emitted UNHASHED at bootstrap/ssr/ssr.js:
+                // Laravel's Inertia BundleDetector only looks for that exact
+                // path (or ssr.mjs), and when it finds nothing the HttpGateway
+                // silently skips SSR and every page falls back to client-side
+                // rendering — even with the SSR server running.
+                entryFileNames: isSsrBuild ? '[name].js' : 'assets/js/[name]-[hash].js',
                 assetFileNames: ({ name }) => {
                     if (/\.(gif|jpe?g|png|svg|webp)$/.test(name ?? '')) {
                         return 'assets/images/[name]-[hash][extname]';
