@@ -1,0 +1,1 @@
+import{G as e}from"./vendor-CF2XpCjb.js";function a({value:a,className:r="",children:s,...t}){return e.jsx("label",{...t,className:"block text-sm font-medium text-gray-700 "+r,children:a||s})}export{a as I};

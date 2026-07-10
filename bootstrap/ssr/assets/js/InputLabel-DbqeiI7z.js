@@ -1,0 +1,1 @@
+import{jsx as e}from"react/jsx-runtime";function t({value:t,className:r="",children:a,...l}){return e("label",{...l,className:"block text-sm font-medium text-gray-700 "+r,children:t||a})}export{t as I};

@@ -1,0 +1,41 @@
+*.log
+.DS_Store
+.env
+.env.production
+.env.backup
+.env.bak-*
+/deploy.sh
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+# NOTE: public/app-assets (the Vite build output) IS committed so the production
+# deploy ships a working compiled frontend via `git pull` (the on-server
+# `vite build` is not reliably running, and the old public/build is owned by
+# another user). Rebuild + commit public/app-assets when changing frontend code.
+/public/hot
+/public/storage
+/public/images/testimonials/*
+!/public/images/testimonials/.gitkeep
+# Admin-uploaded videos live on the server; keep only the seeded testimonial clips in git.
+/public/videos/*
+!/public/videos/testimonial-1.mp4
+!/public/videos/testimonial-2.mp4
+!/public/videos/testimonial-3.mp4
+/storage/*.key
+/storage/pail
+/vendor
+Homestead.json
+Homestead.yaml
+Thumbs.db
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat

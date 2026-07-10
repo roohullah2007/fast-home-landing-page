@@ -1,0 +1,1 @@
+import{G as s}from"./vendor-CF2XpCjb.js";function a({className:a="",...e}){return s.jsx("img",{src:"/images/logo.webp",alt:"Fast Home Cash Offers",className:`object-contain ${a}`,...e})}export{a as A};

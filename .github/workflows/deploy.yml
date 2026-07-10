@@ -1,0 +1,61 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:        # allow manual "Run workflow" from the Actions tab
+
+# Only ever run ONE production deploy at a time. Queue new pushes instead of
+# running them in parallel, and never cancel a deploy that's already mid-flight.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Hard ceiling on the whole job. Covers the connection-retry budget below
+    # plus one full ~12m deploy, without ever burning the default 6h.
+    timeout-minutes: 25
+
+    steps:
+      # The server does the full deploy itself: deploy.sh git-pulls origin/main,
+      # installs composer + npm deps, runs `vite build`, migrates, rebuilds
+      # caches, and reloads php-fpm/nginx (with an auto `php artisan up` on any
+      # failure). So the runner has nothing to build or upload — it just opens
+      # one SSH session and runs the script.
+      #
+      # We use raw `ssh` wrapped in nick-fields/retry instead of
+      # appleboy/ssh-action because the latter has no connection-retry: a single
+      # transient "dial tcp: i/o timeout" at the TCP handshake fails the whole
+      # deploy (that's what crashed the 2026-06-18 run). Here we retry ONLY on
+      # SSH connection-level failures (exit 255 = connect/handshake/auth error),
+      # so a network blip is ridden out automatically — while a genuine
+      # deploy.sh failure (any other exit code) fails immediately instead of
+      # pointlessly re-running a broken deploy.
+      - name: Run deploy.sh on server via SSH (auto-retry on connect failures)
+        uses: nick-fields/retry@v3
+        with:
+          # Per-attempt ceiling: bounds one full deploy.sh run.
+          timeout_minutes: 13
+          # Connection failures are fast (ConnectTimeout 60s), so several
+          # attempts cost little. A real deploy failure won't be retried.
+          max_attempts: 5
+          retry_wait_seconds: 15
+          # 255 is SSH's exit code for connection/handshake/auth failures —
+          # exactly the transient "i/o timeout" class we want to ride out.
+          retry_on_exit_code: 255
+          command: |
+            mkdir -p ~/.ssh && chmod 700 ~/.ssh
+            printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+            ssh \
+              -i ~/.ssh/deploy_key \
+              -p "${{ secrets.SSH_PORT }}" \
+              -o StrictHostKeyChecking=accept-new \
+              -o UserKnownHostsFile=~/.ssh/known_hosts \
+              -o ConnectTimeout=60 \
+              -o ServerAliveInterval=30 \
+              -o ServerAliveCountMax=10 \
+              "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+              'cd /var/www/fasthomecashoffers.com && ./deploy.sh'

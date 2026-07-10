@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /* Performance optimizations */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+        text-rendering: optimizeSpeed;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+        font-family: 'Lato', 'Figtree', sans-serif;
+        font-display: swap;
+    }
+
+    /* Prevent horizontal scroll on mobile */
+    html, body {
+        overflow-x: hidden;
+        max-width: 100vw;
+    }
+
+    /* Ensure header doesn't cause horizontal scroll */
+    header {
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+
+    /* Optimize images for performance */
+    img {
+        content-visibility: auto;
+    }
+
+    /* Prevent layout shifts */
+    img, video, iframe {
+        height: auto;
+        max-width: 100%;
+    }
+}
+
+/* Performance: Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* GPU acceleration for transforms and animations */
+@layer utilities {
+    .gpu-accelerated {
+        transform: translateZ(0);
+        will-change: transform;
+    }
+}
+
+/* Google Places Autocomplete dropdown.
+   Google appends .pac-container to <body> with a default z-index of 1000,
+   which renders it BEHIND the lead-capture modal overlay (z-index 9999),
+   making address suggestions invisible inside the modal. Lift it above the
+   modal so the dropdown shows. */
+.pac-container {
+    z-index: 100000 !important;
+}

@@ -1,0 +1,236 @@
+import { useState } from 'react';
+import { Link, usePage, router } from '@inertiajs/react';
+import ApplicationLogo from '@/Components/ApplicationLogo';
+import Dropdown from '@/Components/Dropdown';
+
+function SidebarContent({ navigation }) {
+    return (
+        <div className="flex flex-col h-0 flex-1 bg-gray-800">
+            <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+                <div className="flex items-center flex-shrink-0 px-4">
+                    <Link href="/" className="flex-shrink-0 bg-white rounded-md px-2 py-1">
+                        <ApplicationLogo className="h-8 w-auto" />
+                    </Link>
+                    <span className="ml-3 text-white text-lg font-semibold">Admin Panel</span>
+                </div>
+                <nav className="mt-5 flex-1 px-2 space-y-1">
+                    {navigation.map((item) => (
+                        <Link
+                            key={item.name}
+                            href={item.href}
+                            className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
+                                item.current
+                                    ? 'bg-gray-900 text-white'
+                                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                            }`}
+                        >
+                            <div className="mr-3 flex-shrink-0 h-6 w-6">
+                                {item.icon}
+                            </div>
+                            {item.name}
+                        </Link>
+                    ))}
+                </nav>
+            </div>
+            <div className="flex-shrink-0 flex bg-gray-700 p-4">
+                <div className="flex items-center">
+                    <div className="h-9 w-9 rounded-full bg-gray-600 flex items-center justify-center">
+                        <span className="text-sm font-medium text-white">
+                            {usePage().props.auth?.user?.name?.charAt(0) || 'A'}
+                        </span>
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm font-medium text-white">
+                            {usePage().props.auth?.user?.name || 'Admin'}
+                        </p>
+                        <p className="text-xs font-medium text-gray-300">
+                            Administrator
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default function AdminLayout({ children, header }) {
+    const { auth } = usePage().props;
+    const user = auth?.user;
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    // Safety check for user
+    if (!user) {
+        return (
+            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900 mx-auto"></div>
+                    <p className="mt-4 text-gray-600">Loading...</p>
+                </div>
+            </div>
+        );
+    }
+
+    const navigation = [
+        {
+            name: 'Dashboard',
+            href: route('dashboard'),
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
+                </svg>
+            ),
+            current: route().current('dashboard')
+        },
+        // Removed Job Vacancies - Using Indeed for job postings
+        {
+            name: 'Leads',
+            href: route('admin.leads.index'),
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+                </svg>
+            ),
+            current: route().current('admin.leads.*')
+        },
+        {
+            name: 'Site Settings',
+            href: route('admin.site-settings.index'),
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75" />
+                </svg>
+            ),
+            current: route().current('admin.site-settings.*')
+        },
+        {
+            name: 'Form Settings',
+            href: route('admin.settings.index'),
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+            ),
+            current: route().current('admin.settings.*')
+        },
+        {
+            name: 'Profile',
+            href: route('profile.edit'),
+            icon: (
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+            ),
+            current: route().current('profile.*')
+        }
+    ];
+
+    return (
+        <div className="h-screen flex overflow-hidden bg-gray-100">
+            {/* Mobile sidebar */}
+            <div className={`fixed inset-0 flex z-40 lg:hidden ${sidebarOpen ? '' : 'hidden'}`}>
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)}></div>
+                <div className="relative flex-1 flex flex-col max-w-xs w-full bg-white">
+                    <div className="absolute top-0 right-0 -mr-12 pt-2">
+                        <button
+                            className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                            onClick={() => setSidebarOpen(false)}
+                        >
+                            <span className="sr-only">Close sidebar</span>
+                            <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <SidebarContent navigation={navigation} />
+                </div>
+            </div>
+
+            {/* Desktop sidebar */}
+            <div className="hidden lg:flex lg:flex-shrink-0">
+                <div className="flex flex-col w-64">
+                    <SidebarContent navigation={navigation} />
+                </div>
+            </div>
+
+            {/* Main content */}
+            <div className="flex flex-col w-0 flex-1 overflow-hidden">
+                {/* Top navigation */}
+                <div className="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                    <button
+                        className="px-4 border-r border-gray-200 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500 lg:hidden"
+                        onClick={() => setSidebarOpen(true)}
+                    >
+                        <span className="sr-only">Open sidebar</span>
+                        <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+                        </svg>
+                    </button>
+                    
+                    {/* Header */}
+                    <div className="flex-1 px-4 flex justify-between items-center">
+                        <div className="flex-1">
+                            {header && (
+                                <div className="w-full">
+                                    {header}
+                                </div>
+                            )}
+                        </div>
+                        <div className="ml-4 flex items-center lg:ml-6">
+                            {/* Profile dropdown */}
+                            <Dropdown>
+                                <Dropdown.Trigger>
+                                    <span className="inline-flex rounded-md">
+                                        <button
+                                            type="button"
+                                            className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                        >
+                                            <div className="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span className="text-sm font-medium text-gray-600">
+                                                    {user.name.charAt(0)}
+                                                </span>
+                                            </div>
+                                            {user.name}
+                                            <svg
+                                                className="ml-2 -mr-0.5 h-4 w-4"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </Dropdown.Trigger>
+
+                                <Dropdown.Content>
+                                    <Dropdown.Link href={route('profile.edit')}>
+                                        Profile
+                                    </Dropdown.Link>
+                                    <Dropdown.Link href="/" target="_blank">
+                                        View Website
+                                    </Dropdown.Link>
+                                    <button
+                                        onClick={() => router.post(route('logout'))}
+                                        className="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none"
+                                    >
+                                        Log Out
+                                    </button>
+                                </Dropdown.Content>
+                            </Dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Main content area */}
+                <main className="flex-1 relative overflow-y-auto focus:outline-none">
+                    {children}
+                </main>
+            </div>
+        </div>
+    );
+}
