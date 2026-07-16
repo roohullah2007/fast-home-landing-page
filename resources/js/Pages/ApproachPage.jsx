@@ -34,14 +34,14 @@ export default function ApproachPage({ auth = {} }) {
 
     return (
         <>
-            <Head title="Our Approach - Fast Home Cash Offers" />
+            <Head title="Sell Your House Fast for Cash" />
             
             <div className="min-h-screen bg-gray-50">
                 {/* Navigation */}
                 <Navbar />
                 
                 {/* Main Content */}
-                <main className="mt-[80px] lg:mt-[102px]">
+                <main className="mt-[100px] lg:mt-[118px]">
                     {/* Hero Section */}
                     <HeroSection />
                     

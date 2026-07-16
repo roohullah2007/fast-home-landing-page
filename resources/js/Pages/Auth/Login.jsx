@@ -37,10 +37,10 @@ export default function Login({ status, canResetPassword }) {
                 <main className="mt-[80px] lg:mt-[102px]">
                     {/* Hero Section */}
                     <section className="relative bg-cover bg-center bg-no-repeat py-20" style={{
-                        backgroundImage: 'url(/images/login-bg.jpg), url(https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80)'
+                        backgroundImage: 'url(/images/login-page.png)'
                     }}>
                         {/* Background Overlay */}
-                        <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+                        <div className="absolute inset-0 bg-black bg-opacity-50"></div>
                         
                         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

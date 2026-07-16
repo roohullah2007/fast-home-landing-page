@@ -9,22 +9,22 @@
     "/app-assets/assets/js/ApplicationLogo-TCErmWFw.js"
   ],
   "resources/js/Components/Approach/CallToActionSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Approach/DifferenceSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Approach/FAQSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Approach/HeroSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Approach/ProcessStepsSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Approach/ValuesSection.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Components/Blog/BlogCategoriesSection.jsx": [
     "/app-assets/assets/js/BlogPage-D9AbEoK6.js"
@@ -45,7 +45,7 @@
     "/app-assets/assets/js/Footer-W8oNhgYN.js"
   ],
   "resources/js/Components/Checkbox.jsx": [
-    "/app-assets/assets/js/Login-4UMYYnR0.js"
+    "/app-assets/assets/js/Login-577Lt7av.js"
   ],
   "resources/js/Components/Contact/ConnectWithUsSection.jsx": [
     "/app-assets/assets/js/ContactPage-DryA4BIl.js"
@@ -303,7 +303,7 @@
     "/app-assets/assets/js/AdminDashboard-CI-lC0f1.js"
   ],
   "resources/js/Pages/ApproachPage.jsx": [
-    "/app-assets/assets/js/ApproachPage-C1jaCo3N.js"
+    "/app-assets/assets/js/ApproachPage-CI0Wb2hY.js"
   ],
   "resources/js/Pages/Auth/ConfirmPassword.jsx": [
     "/app-assets/assets/js/ConfirmPassword-D24Iab0Z.js"
@@ -312,7 +312,7 @@
     "/app-assets/assets/js/ForgotPassword-DYu4O4Tf.js"
   ],
   "resources/js/Pages/Auth/Login.jsx": [
-    "/app-assets/assets/js/Login-4UMYYnR0.js"
+    "/app-assets/assets/js/Login-577Lt7av.js"
   ],
   "resources/js/Pages/Auth/Register.jsx": [
     "/app-assets/assets/js/Register-Qym36ceU.js"
