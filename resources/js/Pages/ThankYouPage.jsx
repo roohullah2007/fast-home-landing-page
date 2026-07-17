@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
@@ -5,6 +6,13 @@ import Footer from '@/Components/Footer';
 export default function ThankYouPage({ type = 'general' }) {
     const { siteSettings } = usePage().props;
     const phoneLink = siteSettings.contactPhone.replace(/\D/g, '');
+
+    // Fire Google Ads "Lead Form Submitted" conversion when a lead lands here.
+    useEffect(() => {
+        if (type === 'lead' && typeof window.gtag_report_conversion === 'function') {
+            window.gtag_report_conversion();
+        }
+    }, [type]);
 
     const getContent = () => {
         switch (type) {

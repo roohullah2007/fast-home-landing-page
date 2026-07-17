@@ -6,6 +6,32 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11043585439"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'AW-11043585439');
+        </script>
+
+        <!-- Event snippet for Lead Form Submitted conversion page -->
+        <script>
+        function gtag_report_conversion(url) {
+          var callback = function () {
+            if (typeof(url) != 'undefined') {
+              window.location = url;
+            }
+          };
+          gtag('event', 'conversion', {
+              'send_to': 'AW-11043585439/-442CMivwKMYEJ_7_pEp',
+              'event_callback': callback
+          });
+          return false;
+        }
+        </script>
+
         <!-- Resource Hints for Performance Optimization -->
         <link rel="preconnect" href="https://fonts.bunny.net" crossorigin>
         <link rel="preconnect" href="https://doctor-home.com" crossorigin>

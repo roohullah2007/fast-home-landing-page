@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Head, Link, usePage } from '@inertiajs/react';
 import Navbar from '@/Components/Navbar';
 import Footer from '@/Components/Footer';
@@ -6,6 +7,13 @@ export default function ConfirmedPage() {
     const { siteSettings } = usePage().props;
     const phone = siteSettings?.contactPhone || '866-696-8613';
     const phoneLink = phone.replace(/\D/g, '');
+
+    // Fire Google Ads "Lead Form Submitted" conversion for qualified leads.
+    useEffect(() => {
+        if (typeof window.gtag_report_conversion === 'function') {
+            window.gtag_report_conversion();
+        }
+    }, []);
 
     return (
         <>

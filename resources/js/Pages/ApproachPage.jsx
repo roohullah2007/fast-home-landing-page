@@ -41,7 +41,7 @@ export default function ApproachPage({ auth = {} }) {
                 <Navbar />
                 
                 {/* Main Content */}
-                <main className="mt-[100px] lg:mt-[118px]">
+                <main className="mt-[94px] lg:mt-[102px]">
                     {/* Hero Section */}
                     <HeroSection />
                     
